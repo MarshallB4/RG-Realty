@@ -105,6 +105,8 @@ export const MarketStats: React.FC = () => {
             </p>
           </div>
 
+          
+
           {/* Summary stats */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 max-w-6xl">
             <div className="bg-[#f9f6f0] border border-[#ddd4c7] p-6">
@@ -262,10 +264,10 @@ export const MarketStats: React.FC = () => {
                         borderRadius: '0px',
                         color: '#1f1d1a',
                       }}
-                      formatter={(value: number) => [
-                        `$${value.toLocaleString()}`,
-                        'Benchmark Price',
-                      ]}
+                      formatter={(value: any) => [
+  `$${Number(value).toLocaleString()}`,
+  'Benchmark Price',
+]}
                     />
                     <Line
                       type="monotone"

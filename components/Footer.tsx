@@ -145,12 +145,13 @@ export const Footer: React.FC = () => {
             © {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.
           </p>
           <div className="flex space-x-8 mt-4 md:mt-0">
-            <Link to="/privacy" className="hover:text-[#1f1d1a] transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="hover:text-[#1f1d1a] transition-colors">
-              Terms of Service
-            </Link>
+            <Link
+  to="/privacy"
+  className="text-sm text-[#7d7468] hover:text-[#1f1d1a] transition-colors"
+>
+  Privacy Policy
+</Link>
+            
           </div>
         </div>
       </div>

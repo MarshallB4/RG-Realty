@@ -110,13 +110,13 @@ const About: React.FC = () => {
                 <p>
                   Known for being easy to talk to and highly responsive, he focuses on building
                   trust through honest advice, clear communication, and consistent follow-through.
-                  His style is calm, personable, and practical — helping clients feel informed
+                  His style is calm, personable, and practical. Helping clients feel informed
                   instead of overwhelmed.
                 </p>
 
                 <p>
                   Outside of real estate, Roland is passionate about soccer. He plays in a local
-                  men’s league with Aces FC and is a dedicated Manchester United supporter —
+                  men’s league with Aces FC and is a dedicated Manchester United supporter,
                   something clients quickly learn when conversations go beyond just homes.
                 </p>
 

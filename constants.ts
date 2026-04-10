@@ -11,6 +11,8 @@ export const PHONE_PERSONAL = '403-852-0242';
    CALGARY MARKET DATA (REAL)
    ========================= */
 
+   
+
 export const CALGARY_MARKET_DATA = [
   { month: 'Apr', year: 2025, sales: 2230, newListings: 4037, inventory: 5868, benchmarkPrice: 589200, averagePrice: 646566, daysOnMarket: 29 },
   { month: 'May', year: 2025, sales: 2559, newListings: 4840, inventory: 6744, benchmarkPrice: 588300, averagePrice: 650228, daysOnMarket: 32 },
@@ -46,7 +48,7 @@ export const SERVICES: ServiceItem[] = [
   {
     title: "First Time Home Buying",
     description: "Navigating your first purchase with confidence and clarity.",
-    longDescription: "Buying your first home is a big step, but you don't have to take it alone. We demystify the process, helping you understand financing, incentives, and property values. Let us help you unlock the door to your very first home with confidence and ease.",
+    longDescription: "Buying your first home is a big step, but you don't have to take it alone. We simplify the process, helping you understand financing, incentives, and property values. Let us help you unlock the door to your very first home with confidence and ease.",
     icon: "key"
   },
   {
@@ -108,6 +110,7 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
     role: "Home Buyer",
     rating: 5,
     content:
-      "Roland is a gem—attentive, knowledgeable, and always looking out for my best interest. Possession day went smoothly and I couldn’t have asked for a better experience."
+      "Roland is a gem! Attentive, knowledgeable, and always looking out for my best interest. Possession day went smoothly and I couldn’t have asked for a better experience."
   }
 ];
+

@@ -73,10 +73,22 @@ export const Home: React.FC = () => {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   const [homePrice, setHomePrice] = useState(500000);
-  const [downPayment, setDownPayment] = useState(100000);
-  const [interestRate, setInterestRate] = useState(5.49);
+  const [downPayment, setDownPayment] = useState(50000);
+  const [interestRate, setInterestRate] = useState(4.49);
   const [amortizationYears, setAmortizationYears] = useState(25);
   const [paymentFrequency, setPaymentFrequency] = useState<PaymentFrequency>('Monthly');
+
+  const getMinimumDownPayment = (price: number) => {
+  if (price >= 1500000) {
+    return price * 0.2;
+  }
+
+  if (price > 500000) {
+    return 500000 * 0.05 + (price - 500000) * 0.1;
+  }
+
+  return price * 0.05;
+};
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -136,8 +148,8 @@ export const Home: React.FC = () => {
 
   const resetCalculator = () => {
     setHomePrice(500000);
-    setDownPayment(100000);
-    setInterestRate(5.49);
+    setDownPayment(50000);
+    setInterestRate(4.49);
     setAmortizationYears(25);
     setPaymentFrequency('Monthly');
   };
@@ -177,12 +189,17 @@ export const Home: React.FC = () => {
             </p>
 
             <div className="animate-fade-up opacity-0 [animation-delay:600ms] flex flex-col sm:flex-row gap-5">
-              <Link
-                to="/listings"
-                className="group bg-[#8c7b5f] text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-[#1f1d1a] transition-all duration-300"
-              >
-                Browse Listings
-              </Link>
+  <a
+    href={`${window.location.origin}${window.location.pathname}?idx=${Date.now()}#/listings`}
+    onClick={(e) => {
+      e.preventDefault();
+      const base = `${window.location.origin}${window.location.pathname}`;
+      window.location.assign(`${base}?idx=${Date.now()}#/listings`);
+    }}
+    className="group bg-[#8c7b5f] text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-[#1f1d1a] transition-all duration-300"
+  >
+    Browse Listings
+  </a>
 
               <Link
                 to="/contact"
@@ -235,13 +252,13 @@ export const Home: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-8 mb-10">
                 <div>
-                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">500+</h4>
+                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">5+</h4>
                   <p className="text-xs uppercase tracking-widest text-[#7d7468]">
-                    Families Housed
+                    Years of Experience
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">$150M+</h4>
+                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">$70M+</h4>
                   <p className="text-xs uppercase tracking-widest text-[#7d7468]">Volume Sold</p>
                 </div>
               </div>
@@ -345,12 +362,17 @@ export const Home: React.FC = () => {
               designed to help you narrow down the right fit faster.
             </p>
 
-            <Link
-              to="/listings"
-              className="inline-block bg-[#8c7b5f] text-white px-10 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-[#1f1d1a] transition-all duration-300"
-            >
-              Search Properties
-            </Link>
+            <a
+  href={`${window.location.origin}${window.location.pathname}?idx=${Date.now()}#/listings`}
+  onClick={(e) => {
+    e.preventDefault();
+    const base = `${window.location.origin}${window.location.pathname}`;
+    window.location.assign(`${base}?idx=${Date.now()}#/listings`);
+  }}
+  className="inline-block bg-[#8c7b5f] text-white px-10 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-[#1f1d1a] transition-all duration-300"
+>
+  Search Properties
+</a>
           </div>
         </section>
 
@@ -445,8 +467,7 @@ export const Home: React.FC = () => {
             </h2>
 
             <p className="text-[#5f584e] text-lg md:text-xl mb-10 font-light leading-relaxed max-w-3xl mx-auto">
-              Receive a complimentary, professional valuation of your property based on current
-              market conditions.
+              Curious about the market? Request a complimentary property assessment <br></br>with zero strings attached!
             </p>
 
             <Link
@@ -647,36 +668,97 @@ export const Home: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-[#3f3932] mb-2">
-                        Down Payment ($)
-                      </label>
-                      <input
-                        type="number"
-                        min={0}
-                        value={downPayment}
-                        onChange={(e) => setDownPayment(Number(e.target.value) || 0)}
-                        className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-                      />
-                      <p className="text-sm text-[#9a8874] mt-2">
-                        {homePrice > 0
-                          ? `${Math.round((downPayment / homePrice) * 100)}% of purchase price`
-                          : '0% of purchase price'}
-                      </p>
-                    </div>
+  <div className="flex items-center gap-2 mb-2">
+    <label className="block text-sm font-medium text-[#3f3932]">
+      Down Payment ($)
+    </label>
+
+    <div className="group relative">
+      <button
+        type="button"
+        aria-label="Down payment information"
+        className="w-5 h-5 rounded-full border border-[#b9a98c] text-[#8c7b5f] text-[11px] font-bold flex items-center justify-center hover:bg-[#efe9df] transition-colors"
+      >
+        ?
+      </button>
+
+      <div className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 bg-[#2f2b26] text-white text-xs leading-relaxed p-3 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+        Typical minimum down payment in Canada:<br></br>
+
+• 5% on the first $500,000<br></br>  
+• 10% on the rest (up to $1.49M)<br></br>  
+• 20% for homes $1.5M+<br></br>
+
+Exact requirements may vary by lender.
+      </div>
+    </div>
+  </div>
+
+  <input
+    type="number"
+    min={0}
+    value={downPayment}
+    onChange={(e) => setDownPayment(Number(e.target.value) || 0)}
+    className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+  />
+
+  <p className="text-sm text-[#9a8874] mt-2">
+    {homePrice > 0
+      ? `${Math.round((downPayment / homePrice) * 100)}% of purchase price`
+      : '0% of purchase price'}
+  </p>
+
+  {homePrice > 0 && (
+    <p className="text-sm text-[#9a8874] mt-1">
+      Estimated minimum: {formatCurrency(getMinimumDownPayment(homePrice))}
+    </p>
+  )}
+
+  {homePrice > 0 && downPayment < getMinimumDownPayment(homePrice) && (
+    <p className="text-sm text-[#b85c5c] mt-1">
+      Down payment is below estimated minimum for this price.
+    </p>
+  )}
+</div>
 
                     <div>
-                      <label className="block text-sm font-medium text-[#3f3932] mb-2">
-                        Interest Rate (%)
-                      </label>
-                      <input
-                        type="number"
-                        min={0}
-                        step="0.01"
-                        value={interestRate}
-                        onChange={(e) => setInterestRate(Number(e.target.value) || 0)}
-                        className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-                      />
-                    </div>
+  <div className="flex items-center gap-2 mb-2">
+    <label className="block text-sm font-medium text-[#3f3932]">
+      Interest Rate (%)
+    </label>
+
+    <div className="group relative">
+      <button
+        type="button"
+        aria-label="Interest rate information"
+        className="w-5 h-5 rounded-full border border-[#b9a98c] text-[#8c7b5f] text-[11px] font-bold flex items-center justify-center hover:bg-[#efe9df] transition-colors"
+      >
+        ?
+      </button>
+
+      <div className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-72 -translate-x-1/2 bg-[#2f2b26] text-white text-xs leading-relaxed p-3 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
+        Mortgage rates change over time.<br></br>
+
+This is a sample rate for planning purposes only.
+
+Your actual rate will depend on your lender, mortgage type, and financial profile.
+      </div>
+    </div>
+  </div>
+
+  <input
+    type="number"
+    min={0}
+    step="0.01"
+    value={interestRate}
+    onChange={(e) => setInterestRate(Number(e.target.value) || 0)}
+    className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+  />
+
+  <p className="text-sm text-[#9a8874] mt-2">
+    Using 4.49% as a planning estimate. You can adjust this anytime.
+  </p>
+</div>
                   </div>
                 </div>
               </div>
@@ -731,8 +813,7 @@ export const Home: React.FC = () => {
                   </p>
 
                   <p className="text-[#8a7d6e] text-base leading-relaxed">
-                    This is an estimate and does not include property tax, insurance, condo fees,
-                    or other applicable costs.
+                    This is an estimate based on your inputs and does not include property tax, insurance, condo fees, or mortgage insurance (if applicable).
                   </p>
                 </div>
               </div>

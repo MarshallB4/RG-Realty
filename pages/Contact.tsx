@@ -76,13 +76,16 @@ export const Contact: React.FC = () => {
     </div>
 
     <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-[#7d7468] mb-2">
-        Email
-      </p>
-      <p className="text-[#1f1d1a] font-medium">
-        roland@soldbyrg.ca
-      </p>
-    </div>
+  <p className="text-xs uppercase tracking-[0.18em] text-[#7d7468] mb-2">
+    Email
+  </p>
+  <a
+    href="mailto:roland@soldbyrg.ca"
+    className="text-[#1f1d1a] font-medium hover:text-[#8c7b5f] transition-colors"
+  >
+    roland@soldbyrg.ca
+  </a>
+</div>
 
     <div>
       <p className="text-xs uppercase tracking-[0.18em] text-[#7d7468] mb-2">
@@ -135,40 +138,55 @@ export const Contact: React.FC = () => {
                       />
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label
-                            htmlFor="name"
-                            className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2"
-                          >
-                            Name
-                          </label>
-                          <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            required
-                            className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                            placeholder="Your Name"
-                          />
-                        </div>
+  <div>
+    <label
+      htmlFor="name"
+      className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2"
+    >
+      Name
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
+      placeholder="Your Name"
+    />
+  </div>
 
-                        <div>
-                          <label
-                            htmlFor="email"
-                            className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2"
-                          >
-                            Email
-                          </label>
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                            placeholder="you@example.com"
-                          />
-                        </div>
-                      </div>
+  <div>
+    <label className="block text-xs uppercase tracking-[0.18em] text-[#7d7468] mb-2">
+      Phone <span className="normal-case text-[#9a9488]">(optional)</span>
+    </label>
+    <input
+      type="tel"
+      name="phone"
+      placeholder="(403) 123-4567"
+      className="w-full border border-[#ddd4c7] px-4 py-3 bg-white focus:outline-none focus:border-[#8c7b5f] transition-colors"
+    />
+  </div>
+
+  {/* ✅ FULL WIDTH EMAIL */}
+  <div className="md:col-span-2">
+    <label
+      htmlFor="email"
+      className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2"
+    >
+      Email
+    </label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
+      placeholder="you@example.com"
+    />
+  </div>
+</div>
+
+                      
 
                       <div>
                         <label

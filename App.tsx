@@ -12,6 +12,7 @@ import { Contact } from './pages/Contact';
 import { Testimonials } from './pages/Testimonials';
 import About from './pages/About';
 import { ScrollToTop } from './components/ScrollToTop';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function AppContent() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
         </Routes>
       </main>
       <Footer />

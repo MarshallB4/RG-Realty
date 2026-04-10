@@ -133,17 +133,14 @@ export const Services: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {SERVICES.map((service, index) => {
               // @ts-ignore
-              const IconComponent =
-                Icons[
-                  service.icon
-                    .charAt(0)
-                    .toUpperCase() +
-                    service.icon
-                      .slice(1)
-                      .replace(/-([a-z])/g, function (g) {
-                        return g[1].toUpperCase();
-                      })
-                ] || Icons.HelpCircle;
+              const iconKey =
+  service.icon.charAt(0).toUpperCase() +
+  service.icon
+    .slice(1)
+    .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+const IconComponent =
+  ((Icons as unknown) as Record<string, React.ComponentType<any>>)[iconKey] || Icons.HelpCircle;
 
               const isExpanded = expandedIndex === index;
 
