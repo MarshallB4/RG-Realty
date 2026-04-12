@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
             {/* eXp Realty Logo */}
             <div className="pt-4 border-t border-[#ddd4c7]">
               <img
-                src="/assets/images/exp-black.png"
+                src="/images/exp-black.png"
                 alt="eXp Realty"
                 className="h-8 w-auto object-contain opacity-80"
               />

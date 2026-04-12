@@ -14,7 +14,7 @@ export const Testimonials: React.FC = () => {
           {/* Left image block */}
           <div className="lg:col-span-6 relative min-h-[320px] lg:min-h-full overflow-hidden">
             <img
-              src="/assets/images/beige-kitchen.jpg"
+              src="/images/testimonials.webp"
               alt="Luxury home"
               className="w-full h-full object-cover"
             />

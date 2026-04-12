@@ -68,7 +68,7 @@ export const Services: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[620px]">
           <div className="relative min-h-[320px] lg:min-h-full overflow-hidden">
             <img
-              src="/assets/images/calgary-tower.jpg"
+              src="/images/sunset.webp"
               alt="Luxury real estate service"
               className="w-full h-full object-cover"
             />

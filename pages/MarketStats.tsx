@@ -79,7 +79,7 @@ export const MarketStats: React.FC = () => {
 
         <div className="absolute right-0 top-0 h-full w-[40%] hidden lg:block">
           <img
-            src="/assets/images/sunset-house.jpg"
+            src="/images/yyc.webp"
             alt="Calgary market insight"
             className="h-full w-full object-cover opacity-90"
           />

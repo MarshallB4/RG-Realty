@@ -16,9 +16,9 @@ import {
 import { AGENT_NAME, AGENCY_NAME } from '../constants';
 
 const SEARCH_BANNER_IMAGES = [
-  'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=2200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2200&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=2200&auto=format&fit=crop',
+  '/images/banner1.webp',
+  '/images/banner2.webp',
+  '/images/banner3.webp',
 ];
 
 const BROWSE_CATEGORIES = [
@@ -26,42 +26,42 @@ const BROWSE_CATEGORIES = [
     title: 'Apartments & Condos',
     subtitle: 'Urban living and low-maintenance options',
     image:
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1800&auto=format&fit=crop',
+      '/images/apartment.webp',
     category: 'apartments',
   },
   {
     title: 'Townhouses',
     subtitle: 'Flexible space with modern convenience',
     image:
-      'https://images.unsplash.com/photo-1448630360428-65456885c650?q=80&w=1800&auto=format&fit=crop',
+      '/images/townhouse.webp',
     category: 'townhouses',
   },
   {
     title: 'Semi-Detached Homes',
     subtitle: 'Practical space with value and versatility',
     image:
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1800&auto=format&fit=crop',
+      '/images/duplex.webp',
     category: 'semi-detached',
   },
   {
     title: 'Detached Homes <$800K',
     subtitle: 'Entry-level detached options across Calgary',
     image:
-      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1800&auto=format&fit=crop',
+      '/images/800k.webp',
     category: 'detached-under-800',
   },
   {
     title: 'Detached Homes $800K – $1.2M',
     subtitle: 'Move-up homes with more space and features',
     image:
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1800&auto=format&fit=crop',
+      '/images/1mil.webp',
     category: 'detached-800-1200',
   },
   {
     title: 'Luxury Listings',
     subtitle: 'Elevated homes and standout properties from $1.2M+',
     image:
-      'https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=1800&auto=format&fit=crop',
+      '/images/luxury.webp',
     category: 'luxury',
   },
 ];
@@ -166,7 +166,7 @@ export const Home: React.FC = () => {
         <section className="relative h-screen w-full overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src="/assets/images/grey-kitchen.jpg"
+              src="/images/grey-kitchen.webp"
               alt="Luxury Real Estate"
               className="w-full h-full object-cover scale-105"
             />
@@ -219,7 +219,7 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-5 relative">
               <div className="relative z-10 aspect-[3/4]">
                 <img
-                  src="/assets/images/headshot.webp"
+                  src="/images/headshot.webp"
                   alt={AGENT_NAME}
                   className="w-full h-full object-cover shadow-2xl"
                 />
@@ -484,7 +484,7 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="min-h-[520px]">
               <img
-                src="/assets/images/grey-kitchen.jpg"
+                src="/images/sbs1.webp"
                 alt="Buying a home in Calgary"
                 className="w-full h-full object-cover"
               />
@@ -615,7 +615,7 @@ export const Home: React.FC = () => {
 
             <div className="min-h-[520px] order-1 lg:order-2">
               <img
-                src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1800&auto=format&fit=crop"
+                src="/images/sbs2.webp"
                 alt="Selling a home in Calgary"
                 className="w-full h-full object-cover"
               />

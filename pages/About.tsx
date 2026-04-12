@@ -18,7 +18,7 @@ const About: React.FC = () => {
           {/* Image */}
           <div className="relative overflow-hidden">
             <img
-              src="/assets/images/headshot.webp"
+              src="/images/headshot2.webp"
               alt="Roland Gjelaj"
               className="w-full h-full object-cover object-[center_22%]"
             />
@@ -221,7 +221,7 @@ const About: React.FC = () => {
               <div className="bg-[#f7f4ee] border border-[#ddd4c7] p-7 md:p-8 max-w-md ml-auto">
                 <div className="flex justify-start mb-7">
                   <img
-                    src="/assets/images/exp-black.png"
+                    src="/images/exp-black.png"
                     alt="eXp Realty"
                     className="h-9 md:h-10 w-auto object-contain"
                   />
