@@ -377,8 +377,8 @@ export const Home: React.FC = () => {
         </section>
 
         {/* Mortgage Calculator CTA Section */}
-        <section className="bg-[#efe9df] py-22 md:py-24 border-y border-[#ddd4c7]">
-          <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+        <section className="bg-[#efe9df] py-24 md:py-32 lg:py-36 border-y border-[#ddd4c7]">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center space-y-6">
             <span className="text-[#8c7b5f] font-bold tracking-[0.2em] uppercase text-xs block mb-5">
               Mortgage Planning
             </span>
@@ -482,7 +482,7 @@ export const Home: React.FC = () => {
         {/* Buyer / Seller Split */}
         <section className="bg-[#f7f4ee]">
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="min-h-[520px]">
+            <div className="min-h-[420px] md:min-h-[520px]">
               <img
                 src="/images/sbs1.webp"
                 alt="Buying a home in Calgary"
@@ -490,8 +490,8 @@ export const Home: React.FC = () => {
               />
             </div>
 
-            <div className="bg-[#d9d1c2] px-8 md:px-14 lg:px-20 py-18 md:py-22 flex items-center">
-              <div className="max-w-xl">
+            <div className="bg-[#d9d1c2] px-8 md:px-14 lg:px-20 py-20 md:py-28 lg:py-32 flex items-center">
+              <div className="max-w-xl space-y-6">
                 <span className="text-[#8c7b5f] font-bold tracking-[0.2em] uppercase text-xs block mb-4">
                   For Buyers
                 </span>
@@ -553,8 +553,8 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="bg-[#f3efe8] px-8 md:px-14 lg:px-20 py-18 md:py-22 flex items-center order-2 lg:order-1">
-              <div className="max-w-xl">
+            <div className="bg-[#f3efe8] px-8 md:px-14 lg:px-20 py-20 md:py-28 lg:py-32 flex items-center order-2 lg:order-1">
+              <div className="max-w-xl space-y-6">
                 <span className="text-[#8c7b5f] font-bold tracking-[0.2em] uppercase text-xs block mb-4">
                   For Sellers
                 </span>
