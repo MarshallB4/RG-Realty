@@ -24,7 +24,7 @@ export const Evaluation: React.FC = () => {
   const [beds, setBeds] = useState('1');
   const [baths, setBaths] = useState('1');
   const [propertyType, setPropertyType] = useState<PropertyType>('Detached House');
-  const [sqft, setSqft] = useState('Not Sure');
+  const [sqft, setSqft] = useState('');
   const [timeframe, setTimeframe] = useState('Immediately');
   const [notes, setNotes] = useState('');
 
@@ -338,8 +338,11 @@ export const Evaluation: React.FC = () => {
                           className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
                         >
                           <option value="1">1</option>
+                          <option value="1.5">1.5</option>
                           <option value="2">2</option>
+                          <option value="2.5">2.5</option>
                           <option value="3">3</option>
+                          <option value="3.5">3.5</option>
                           <option value="4+">4+</option>
                         </select>
                       </div>
@@ -357,31 +360,26 @@ export const Evaluation: React.FC = () => {
                           <option value="Semi-Detached">Semi-Detached</option>
                           <option value="Duplex">Duplex</option>
                           <option value="Townhouse">Townhouse</option>
-                          <option value="Rowhouse">Rowhouse</option>
                           <option value="Condo / Apartment">Condo / Apartment</option>
-                          <option value="Mobile / Manufactured">Mobile / Manufactured</option>
                           <option value="Other">Other</option>
                         </select>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                        Approx. Square Footage
-                      </label>
-                      <select
-                        value={sqft}
-                        onChange={(e) => setSqft(e.target.value)}
-                        className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                      >
-                        <option value="Not Sure">Not Sure</option>
-                        <option value="Under 1000">Under 1,000</option>
-                        <option value="1000-1500">1,000 - 1,500</option>
-                        <option value="1500-2000">1,500 - 2,000</option>
-                        <option value="2000-2500">2,000 - 2,500</option>
-                        <option value="2500+">2,500+</option>
-                      </select>
-                    </div>
+  <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+    Approx. Square Footage
+  </label>
+  <input
+    type="number"
+  min="0"
+  step="50"
+    value={sqft}
+    onChange={(e) => setSqft(e.target.value)}
+    placeholder="e.g. 1850"
+    className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
+  />
+</div>
 
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
