@@ -72,10 +72,10 @@ export const Home: React.FC = () => {
   const [activeSearchImage, setActiveSearchImage] = useState(0);
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
-  const [homePrice, setHomePrice] = useState(500000);
-  const [downPayment, setDownPayment] = useState(50000);
-  const [interestRate, setInterestRate] = useState(4.49);
-  const [amortizationYears, setAmortizationYears] = useState(25);
+  const [homePrice, setHomePrice] = useState<number | ''>(500000);
+const [downPayment, setDownPayment] = useState<number | ''>(50000);
+const [interestRate, setInterestRate] = useState<number | ''>(4.49);
+const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
   const [paymentFrequency, setPaymentFrequency] = useState<PaymentFrequency>('Monthly');
 
   const getMinimumDownPayment = (price: number) => {
@@ -110,34 +110,46 @@ export const Home: React.FC = () => {
   }, [isCalculatorOpen]);
 
   const mortgageResult = useMemo(() => {
-    const principal = Math.max(homePrice - downPayment, 0);
-    const monthlyRate = interestRate / 100 / 12;
-    const totalPayments = amortizationYears * 12;
-
-    if (principal <= 0 || monthlyRate <= 0 || totalPayments <= 0) {
-      return {
-        label: paymentFrequency,
-        value: 0,
-      };
-    }
-
-    const monthlyPayment =
-      (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) /
-      (Math.pow(1 + monthlyRate, totalPayments) - 1);
-
-    let paymentValue = monthlyPayment;
-
-    if (paymentFrequency === 'Bi-Weekly') {
-      paymentValue = (monthlyPayment * 12) / 26;
-    } else if (paymentFrequency === 'Weekly') {
-      paymentValue = (monthlyPayment * 12) / 52;
-    }
-
+  if (
+    homePrice === '' ||
+    downPayment === '' ||
+    interestRate === '' ||
+    amortizationYears === ''
+  ) {
     return {
       label: paymentFrequency,
-      value: paymentValue,
+      value: 0,
     };
-  }, [homePrice, downPayment, interestRate, amortizationYears, paymentFrequency]);
+  }
+
+  const principal = Math.max(homePrice - downPayment, 0);
+  const monthlyRate = interestRate / 100 / 12;
+  const totalPayments = amortizationYears * 12;
+
+  if (principal <= 0 || monthlyRate <= 0 || totalPayments <= 0) {
+    return {
+      label: paymentFrequency,
+      value: 0,
+    };
+  }
+
+  const monthlyPayment =
+    (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) /
+    (Math.pow(1 + monthlyRate, totalPayments) - 1);
+
+  let paymentValue = monthlyPayment;
+
+  if (paymentFrequency === 'Bi-Weekly') {
+    paymentValue = (monthlyPayment * 12) / 26;
+  } else if (paymentFrequency === 'Weekly') {
+    paymentValue = (monthlyPayment * 12) / 52;
+  }
+
+  return {
+    label: paymentFrequency,
+    value: paymentValue,
+  };
+}, [homePrice, downPayment, interestRate, amortizationYears, paymentFrequency]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat('en-CA', {
@@ -658,12 +670,15 @@ export const Home: React.FC = () => {
                       Home Price ($)
                     </label>
                     <input
-                      type="number"
-                      min={0}
-                      value={homePrice}
-                      onChange={(e) => setHomePrice(Number(e.target.value) || 0)}
-                      className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-                    />
+  type="number"
+  min={0}
+  value={homePrice}
+  onChange={(e) => {
+    const value = e.target.value;
+    setHomePrice(value === '' ? '' : Number(value));
+  }}
+  className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+/>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -695,30 +710,35 @@ Exact requirements may vary by lender.
   </div>
 
   <input
-    type="number"
-    min={0}
-    value={downPayment}
-    onChange={(e) => setDownPayment(Number(e.target.value) || 0)}
-    className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-  />
+  type="number"
+  min={0}
+  value={downPayment}
+  onChange={(e) => {
+    const value = e.target.value;
+    setDownPayment(value === '' ? '' : Number(value));
+  }}
+  className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+/>
 
-  <p className="text-sm text-[#9a8874] mt-2">
-    {homePrice > 0
-      ? `${Math.round((downPayment / homePrice) * 100)}% of purchase price`
-      : '0% of purchase price'}
+<p className="text-sm !text-[#9a8874] mt-2">
+  {homePrice && downPayment
+    ? `${Math.round((downPayment / homePrice) * 100)}% of purchase price`
+    : '0% of purchase price'}
+</p>
+
+{homePrice !== '' && homePrice > 0 && (
+  <p className="text-sm !text-[#9a8874] mt-1">
+    Estimated minimum: {formatCurrency(getMinimumDownPayment(homePrice))}
   </p>
+)}
 
-  {homePrice > 0 && (
-    <p className="text-sm text-[#9a8874] mt-1">
-      Estimated minimum: {formatCurrency(getMinimumDownPayment(homePrice))}
-    </p>
-  )}
-
-  {homePrice > 0 && downPayment < getMinimumDownPayment(homePrice) && (
+{homePrice !== '' &&
+  downPayment !== '' &&
+  downPayment < getMinimumDownPayment(homePrice) && (
     <p className="text-sm text-[#b85c5c] mt-1">
       Down payment is below estimated minimum for this price.
     </p>
-  )}
+)}
 </div>
 
                     <div>
@@ -747,13 +767,16 @@ Your actual rate will depend on your lender, mortgage type, and financial profil
   </div>
 
   <input
-    type="number"
-    min={0}
-    step="0.01"
-    value={interestRate}
-    onChange={(e) => setInterestRate(Number(e.target.value) || 0)}
-    className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-  />
+  type="number"
+  min={0}
+  step="0.01"
+  value={interestRate}
+  onChange={(e) => {
+    const value = e.target.value;
+    setInterestRate(value === '' ? '' : Number(value));
+  }}
+  className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+/>
 
   <p className="text-sm text-[#9a8874] mt-2">
     Using 4.49% as a planning estimate. You can adjust this anytime.
@@ -773,12 +796,15 @@ Your actual rate will depend on your lender, mortgage type, and financial profil
                       Amortization (years)
                     </label>
                     <input
-                      type="number"
-                      min={1}
-                      value={amortizationYears}
-                      onChange={(e) => setAmortizationYears(Number(e.target.value) || 25)}
-                      className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-                    />
+  type="number"
+  min={1}
+  value={amortizationYears}
+  onChange={(e) => {
+    const value = e.target.value;
+    setAmortizationYears(value === '' ? '' : Number(value));
+  }}
+  className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+/>
                   </div>
 
                   <div>
