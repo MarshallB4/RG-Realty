@@ -73,7 +73,7 @@ export const Home: React.FC = () => {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   const [homePrice, setHomePrice] = useState<number | ''>(500000);
-const [downPayment, setDownPayment] = useState<number | ''>(50000);
+const [downPaymentPercent, setDownPaymentPercent] = useState<number | ''>(10);
 const [interestRate, setInterestRate] = useState<number | ''>(4.49);
 const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
   const [paymentFrequency, setPaymentFrequency] = useState<PaymentFrequency>('Monthly');
@@ -112,7 +112,7 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
   const mortgageResult = useMemo(() => {
   if (
     homePrice === '' ||
-    downPayment === '' ||
+    downPaymentPercent === '' ||
     interestRate === '' ||
     amortizationYears === ''
   ) {
@@ -122,7 +122,12 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
     };
   }
 
-  const principal = Math.max(homePrice - downPayment, 0);
+  const downPaymentAmount =
+  homePrice > 0 && downPaymentPercent > 0
+    ? (Number(homePrice) * Number(downPaymentPercent)) / 100
+    : 0;
+
+const principal = Math.max(Number(homePrice) - downPaymentAmount, 0);
   const monthlyRate = interestRate / 100 / 12;
   const totalPayments = amortizationYears * 12;
 
@@ -149,7 +154,7 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
     label: paymentFrequency,
     value: paymentValue,
   };
-}, [homePrice, downPayment, interestRate, amortizationYears, paymentFrequency]);
+}, [homePrice, downPaymentPercent, interestRate, amortizationYears, paymentFrequency]);
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat('en-CA', {
@@ -160,7 +165,7 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
 
   const resetCalculator = () => {
     setHomePrice(500000);
-    setDownPayment(50000);
+    setDownPaymentPercent(10);
     setInterestRate(4.49);
     setAmortizationYears(25);
     setPaymentFrequency('Monthly');
@@ -685,7 +690,7 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
                     <div>
   <div className="flex items-center gap-2 mb-2">
     <label className="block text-sm font-medium text-[#3f3932]">
-      Down Payment ($)
+      Down Payment (%)
     </label>
 
     <div className="group relative">
@@ -698,47 +703,47 @@ const [amortizationYears, setAmortizationYears] = useState<number | ''>(25);
       </button>
 
       <div className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 bg-[#2f2b26] text-white text-xs leading-relaxed p-3 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100">
-        Typical minimum down payment in Canada:<br></br>
+        Enter your down payment as a percentage of the purchase price.<br /><br />
 
-• 5% on the first $500,000<br></br>  
-• 10% on the rest (up to $1.49M)<br></br>  
-• 20% for homes $1.5M+<br></br>
-
-Exact requirements may vary by lender.
+Typical minimums in Canada:<br />
+• 5% on the first $500,000<br />
+• 10% on the portion above $500,000 (up to $1.49M)<br />
+• 20% for homes $1.5M+
       </div>
     </div>
   </div>
 
   <input
-  type="number"
-  min={0}
-  value={downPayment}
-  onChange={(e) => {
-    const value = e.target.value;
-    setDownPayment(value === '' ? '' : Number(value));
-  }}
-  className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
-/>
+    type="number"
+    min={0}
+    max={100}
+    value={downPaymentPercent}
+    onChange={(e) => {
+      const value = e.target.value;
+      setDownPaymentPercent(value === '' ? '' : Number(value));
+    }}
+    className="w-full bg-white border border-[#d5cdc1] px-4 py-4 text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0"
+  />
 
-<p className="text-sm !text-[#9a8874] mt-2">
-  {homePrice && downPayment
-    ? `${Math.round((downPayment / homePrice) * 100)}% of purchase price`
-    : '0% of purchase price'}
-</p>
-
-{homePrice !== '' && homePrice > 0 && (
-  <p className="text-sm !text-[#9a8874] mt-1">
-    Estimated minimum: {formatCurrency(getMinimumDownPayment(homePrice))}
+  <p className="text-sm !text-[#9a8874] mt-2">
+    {homePrice && downPaymentPercent !== ''
+      ? `${formatCurrency((homePrice * Number(downPaymentPercent)) / 100)} down payment`
+      : '$0 down payment'}
   </p>
-)}
 
-{homePrice !== '' &&
-  downPayment !== '' &&
-  downPayment < getMinimumDownPayment(homePrice) && (
-    <p className="text-sm text-[#b85c5c] mt-1">
-      Down payment is below estimated minimum for this price.
+  {homePrice !== '' && homePrice > 0 && (
+    <p className="text-sm !text-[#9a8874] mt-1">
+      Estimated minimum: {formatCurrency(getMinimumDownPayment(homePrice))}
     </p>
-)}
+  )}
+
+  {homePrice !== '' &&
+    downPaymentPercent !== '' &&
+    (homePrice * Number(downPaymentPercent)) / 100 < getMinimumDownPayment(homePrice) && (
+      <p className="text-sm text-[#b85c5c] mt-1">
+        Down payment is below estimated minimum for this price.
+      </p>
+    )}
 </div>
 
                     <div>

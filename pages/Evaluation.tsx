@@ -1,5 +1,7 @@
+/// <reference types="google.maps" />
 import React, { useState } from 'react';
 import { Clock3, ShieldCheck, ChartNoAxesCombined } from 'lucide-react';
+import { useEffect, useRef } from "react";
 
 const FORMSPREE_EVALUATION_ENDPOINT = 'https://formspree.io/f/mjgabzpg';
 
@@ -17,9 +19,10 @@ type PropertyType =
 
 export const Evaluation: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>('idle');
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const [address, setAddress] = useState('');
+  const addressRef = useRef<HTMLInputElement | null>(null);
   const [addressError, setAddressError] = useState('');
   const [beds, setBeds] = useState('1');
   const [baths, setBaths] = useState('1');
@@ -33,21 +36,76 @@ export const Evaluation: React.FC = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  // ✅ GOOGLE AUTOCOMPLETE (ADDED HERE)
+  useEffect(() => {
+  if (step !== 1) return;
 
-  if (step !== 2) {
-    if (!address.trim()) {
-      setAddressError('Please enter your property address before continuing.');
-    } else {
+  let autocomplete: any = null;
+
+  const loadPlaces = async () => {
+    try {
+      // load script manually
+      if (!window.google) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&libraries=places`;
+          script.async = true;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      if (!addressRef.current || !window.google?.maps?.places) return;
+
+      autocomplete = new window.google.maps.places.Autocomplete(addressRef.current, {
+        types: ['address'],
+        componentRestrictions: { country: 'ca' },
+      });
+
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+
+        if (place?.formatted_address) {
+          setAddress(place.formatted_address);
+        }
+      });
+
+    } catch (err: any) {
+      console.error('Google Maps load error:', err);
+    }
+  };
+
+  loadPlaces();
+
+  return () => {
+    if (autocomplete && window.google?.maps?.event) {
+      window.google.maps.event.clearInstanceListeners(autocomplete);
+    }
+  };
+}, [step]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (step === 1) {
+      if (!address.trim()) {
+        setAddressError('Please enter your property address before continuing.');
+        return;
+      }
+
       setAddressError('');
       setStatus('idle');
       setStep(2);
+      return;
     }
-    return;
-  }
 
-  setStatus('sending');
+    if (step === 2) {
+      setStep(3);
+      return;
+    }
+
+    setStatus('sending');
 
     const formData = new FormData();
 
@@ -207,45 +265,52 @@ export const Evaluation: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Left info panel */}
-            <div className="lg:col-span-4">
-              <div className="bg-[#e9e1d2] border border-[#d6cab7] p-8 sticky top-24">
-                <span className="text-[#8c7b5f] font-bold tracking-[0.2em] uppercase text-xs block mb-4">
-                  How It Works
-                </span>
+<div className="lg:col-span-4">
+  <div className="bg-[#e9e1d2] border border-[#d6cab7] p-8 sticky top-24">
+    <span className="text-[#8c7b5f] font-bold tracking-[0.2em] uppercase text-xs block mb-4">
+      How It Works
+    </span>
 
-                <h2 className="text-3xl font-serif font-bold text-[#1f1d1a] mb-5 leading-tight">
-                  A simple two-step process
-                </h2>
+    <h2 className="text-3xl font-serif font-bold text-[#1f1d1a] mb-5 leading-tight">
+      A simple three-step process
+    </h2>
 
-                <div className="space-y-6 text-[#5f584e]">
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-wide text-[#1f1d1a] mb-1">
-                      01. Property Details
-                    </p>
-                    <p className="text-sm leading-relaxed">
-                      Start with the basics of your home so the valuation has useful context.
-                    </p>
-                  </div>
+    <div className="space-y-6 text-[#5f584e]">
+      <div>
+        <p className="text-sm font-bold uppercase tracking-wide text-[#1f1d1a] mb-1">
+          01. Property Address
+        </p>
+        <p className="text-sm leading-relaxed">
+          Enter your address to begin your home valuation.
+        </p>
+      </div>
 
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-wide text-[#1f1d1a] mb-1">
-                      02. Contact Information
-                    </p>
-                    <p className="text-sm leading-relaxed">
-                      Leave your preferred contact details so Roland can send your estimate
-                      directly.
-                    </p>
-                  </div>
+      <div>
+        <p className="text-sm font-bold uppercase tracking-wide text-[#1f1d1a] mb-1">
+          02. Property Details
+        </p>
+        <p className="text-sm leading-relaxed">
+          Add a few details to improve accuracy.
+        </p>
+      </div>
 
-                  <div className="pt-4 border-t border-[#d6cab7]">
-                    <p className="text-sm leading-relaxed">
-                      The more accurate the details, the better the guidance. Renovations,
-                      upgrades, finished basements, and suites can all help refine the estimate.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div>
+        <p className="text-sm font-bold uppercase tracking-wide text-[#1f1d1a] mb-1">
+          03. Get Your Report
+        </p>
+        <p className="text-sm leading-relaxed">
+          Receive your custom home value within 24 hours.
+        </p>
+      </div>
+
+      <div className="pt-4 border-t border-[#d6cab7]">
+        <p className="text-sm leading-relaxed">
+          No pressure, no obligation — just a clear understanding of your home's value.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
             {/* Form card */}
             <div className="lg:col-span-8">
@@ -256,182 +321,174 @@ export const Evaluation: React.FC = () => {
                 {/* Progress */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between text-xs uppercase tracking-widest text-[#7d7468]">
-                    <span>{step === 1 ? 'Step 1 of 2' : 'Step 2 of 2'}</span>
-                    <span>{step === 1 ? 'Property Details' : 'Contact Info'}</span>
+                    <span>{`Step ${step} of 3`}</span>
+<span>
+  {step === 1 && 'Address'}
+  {step === 2 && 'Property Details'}
+  {step === 3 && 'Contact Info'}
+</span>
                   </div>
 
                   <div className="mt-3 h-[2px] w-full bg-[#ddd4c7]">
                     <div
                       className={`h-[2px] bg-[#8c7b5f] transition-all duration-300 ${
-                        step === 1 ? 'w-1/2' : 'w-full'
+                      step === 1 ? 'w-1/3' : step === 2 ? 'w-2/3' : 'w-full'
                       }`}
                     />
                   </div>
                 </div>
 
                 {/* Step 1 */}
-                {step === 1 && (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                        Property Address
-                      </label>
-                      <input
-  type="text"
-  required
-  value={address}
-  onChange={(e) => {
-    setAddress(e.target.value);
-    if (addressError) setAddressError('');
-  }}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
+{step === 1 && (
+  <>
+    <div>
+      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+        Property Address
+      </label>
 
-      if (!address.trim()) {
-        setAddressError('Please enter your property address before continuing.');
-        return;
-      }
+      <input
+        ref={addressRef} 
+        type="text"
+        required
+        value={address}
+        onChange={(e) => {
+          setAddress(e.target.value);
+          if (addressError) setAddressError('');
+        }}
+        className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
+        placeholder="Start typing your address..."
+      />
 
-      setAddressError('');
-      setStatus('idle');
-      setStep(2);
-    }
-  }}
-  className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-  placeholder="e.g. 123 Main St, Calgary"
-/>
-                      <p className="text-xs text-[#7d7468] mt-2">
-                        Your address is kept private and never shared publicly.
-                      </p>
+      {addressError && (
+        <p className="text-xs text-red-500 mt-2">{addressError}</p>
+      )}
+    </div>
 
-                      {addressError && (
-                        <p className="text-xs text-red-500 mt-2">{addressError}</p>
-                      )}
-                    </div>
+    <button
+      type="button"
+      onClick={() => {
+        if (!address.trim()) {
+          setAddressError('Please enter your property address before continuing.');
+          return;
+        }
+        setStep(2);
+      }}
+      className="w-full flex justify-center py-4 px-4 text-sm font-bold uppercase tracking-widest text-white bg-[#8c7b5f] hover:bg-[#1f1d1a] transition-all duration-300 mt-3"
+    >
+      Get My Estimate →
+    </button>
+  </>
+)}
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                          Bedrooms
-                        </label>
-                        <select
-                          value={beds}
-                          onChange={(e) => setBeds(e.target.value)}
-                          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                        >
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5+">5+</option>
-                        </select>
-                      </div>
+{/* Step 2 */}
+{step === 2 && (
+  <>
+    <h3 className="text-[#1f1d1a] text-lg font-semibold text-center mb-2">
+      Just a few details to refine your estimate
+    </h3>
+    <p className="text-[#5f584e] text-sm text-center mb-6">
+      This helps create a more accurate valuation for your property.
+    </p>
 
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                          Bathrooms
-                        </label>
-                        <select
-                          value={baths}
-                          onChange={(e) => setBaths(e.target.value)}
-                          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                        >
-                          <option value="1">1</option>
-                          <option value="1.5">1.5</option>
-                          <option value="2">2</option>
-                          <option value="2.5">2.5</option>
-                          <option value="3">3</option>
-                          <option value="3.5">3.5</option>
-                          <option value="4+">4+</option>
-                        </select>
-                      </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Bedrooms */}
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+          Bedrooms
+        </label>
+        <select
+          value={beds}
+          onChange={(e) => setBeds(e.target.value)}
+          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4"
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5+">5+</option>
+        </select>
+      </div>
 
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                          Property Type
-                        </label>
-                        <select
-                          value={propertyType}
-                          onChange={(e) => setPropertyType(e.target.value as PropertyType)}
-                          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                        >
-                          <option value="Detached House">Detached House</option>
-                          <option value="Semi-Detached">Semi-Detached</option>
-                          <option value="Duplex">Duplex</option>
-                          <option value="Townhouse">Townhouse</option>
-                          <option value="Condo / Apartment">Condo / Apartment</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                    </div>
+      {/* Bathrooms */}
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+          Bathrooms
+        </label>
+        <select
+          value={baths}
+          onChange={(e) => setBaths(e.target.value)}
+          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4"
+        >
+          <option value="1">1</option>
+          <option value="1.5">1.5</option>
+          <option value="2">2</option>
+          <option value="2.5">2.5</option>
+          <option value="3">3</option>
+          <option value="3.5">3.5</option>
+          <option value="4+">4+</option>
+        </select>
+      </div>
 
-                    <div>
-  <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-    Approx. Square Footage
-  </label>
-  <input
-    type="number"
-  min="0"
-  step="50"
-    value={sqft}
-    onChange={(e) => setSqft(e.target.value)}
-    placeholder="e.g. 1850"
-    className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-  />
-</div>
+      {/* Property Type */}
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+          Property Type
+        </label>
+        <select
+          value={propertyType}
+          onChange={(e) => setPropertyType(e.target.value as PropertyType)}
+          className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4"
+        >
+          <option value="Detached House">Detached House</option>
+          <option value="Semi-Detached">Semi-Detached</option>
+          <option value="Duplex">Duplex</option>
+          <option value="Townhouse">Townhouse</option>
+          <option value="Condo / Apartment">Condo / Apartment</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
 
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                        When are you planning to sell?
-                      </label>
-                      <select
-                        value={timeframe}
-                        onChange={(e) => setTimeframe(e.target.value)}
-                        className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                      >
-                        <option value="Immediately">Immediately</option>
-                        <option value="1-3 Months">1-3 Months</option>
-                        <option value="3-6 Months">3-6 Months</option>
-                        <option value="6-12 Months">6-12 Months</option>
-                        <option value="Just Curious">Just Curious</option>
-                      </select>
-                    </div>
+    {/* Square Footage */}
+    <div>
+      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
+        Approx. Square Footage (optional)
+      </label>
+      <input
+        type="number"
+        min="0"
+        step="50"
+        value={sqft}
+        onChange={(e) => setSqft(e.target.value)}
+        placeholder="e.g. 1850"
+        className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4"
+      />
+    </div>
 
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-[#7d7468] mb-2">
-                        Additional Notes (optional)
-                      </label>
-                      <textarea
-                        rows={4}
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        className="block w-full bg-white border border-[#ddd4c7] text-[#1f1d1a] focus:border-[#8c7b5f] focus:ring-0 py-3 px-4 transition-colors"
-                        placeholder="Any renovations, upgrades, suite/garage info, or anything else Roland should know..."
-                      />
-                    </div>
+    {/* Navigation */}
+    <div className="flex flex-col md:flex-row gap-3 mt-3">
+      <button
+        type="button"
+        onClick={() => setStep(1)}
+        className="w-full md:w-1/3 flex justify-center py-4 px-4 text-sm font-bold uppercase tracking-widest text-[#5f584e] border border-[#ddd4c7]"
+      >
+        ← Back
+      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!address.trim()) {
-                          setAddressError('Please enter your property address before continuing.');
-                          return;
-                        }
+      <button
+        type="button"
+        onClick={() => setStep(3)}
+        className="w-full md:w-2/3 flex justify-center py-4 px-4 text-sm font-bold uppercase tracking-widest text-white bg-[#8c7b5f] hover:bg-[#1f1d1a] transition-all duration-300"
+      >
+        Almost Done →
+      </button>
+    </div>
+  </>
+)}
 
-                        setAddressError('');
-                        setStatus('idle');
-                        setStep(2);
-                      }}
-                      className="w-full flex justify-center py-4 px-4 text-sm font-bold uppercase tracking-widest text-white bg-[#8c7b5f] hover:bg-[#1f1d1a] transition-all duration-300 mt-3"
-                    >
-                      See My Home Value →
-                    </button>
-                  </>
-                )}
 
-                {/* Step 2 */}
-                {step === 2 && (
+                {/* Step 3 */}
+                {step === 3 && (
                   <>
                     <h3 className="text-[#1f1d1a] text-lg font-semibold text-center mb-2">
                       Where should we send your home value?
@@ -510,7 +567,7 @@ export const Evaluation: React.FC = () => {
                         type="button"
                         onClick={() => {
                           setStatus('idle');
-                          setStep(1);
+                          setStep(2);
                         }}
                         className="w-full md:w-1/3 flex justify-center py-4 px-4 text-sm font-bold uppercase tracking-widest text-[#5f584e] border border-[#ddd4c7] hover:border-[#b9a98c] hover:text-[#1f1d1a] transition-all duration-300"
                       >
