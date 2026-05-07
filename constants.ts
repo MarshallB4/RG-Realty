@@ -14,7 +14,6 @@ export const PHONE_PERSONAL = '403-852-0242';
    
 
 export const CALGARY_MARKET_DATA = [
-  { month: 'Apr', year: 2025, sales: 2230, newListings: 4037, inventory: 5868, benchmarkPrice: 589200, averagePrice: 646566, daysOnMarket: 29 },
   { month: 'May', year: 2025, sales: 2559, newListings: 4840, inventory: 6744, benchmarkPrice: 588300, averagePrice: 650228, daysOnMarket: 32 },
   { month: 'Jun', year: 2025, sales: 2284, newListings: 4223, inventory: 6944, benchmarkPrice: 584600, averagePrice: 646410, daysOnMarket: 33 },
   { month: 'Jul', year: 2025, sales: 2096, newListings: 3911, inventory: 6919, benchmarkPrice: 581100, averagePrice: 617291, daysOnMarket: 37 },
@@ -26,6 +25,7 @@ export const CALGARY_MARKET_DATA = [
   { month: 'Jan', year: 2026, sales: 1234, newListings: 2785, inventory: 4394, benchmarkPrice: 554400, averagePrice: 617844, daysOnMarket: 54 },
   { month: 'Feb', year: 2026, sales: 1525, newListings: 2766, inventory: 4825, benchmarkPrice: 560500, averagePrice: 628343, daysOnMarket: 42 },
   { month: 'Mar', year: 2026, sales: 1881, newListings: 3409, inventory: 5395, benchmarkPrice: 565600, averagePrice: 641844, daysOnMarket: 35 },
+  { month: 'Apr', year: 2026, sales: 2104, newListings: 3621, inventory: 5813, benchmarkPrice: 590300, averagePrice: 640988, daysOnMarket: 33 },
 ];
 
 /* =========================

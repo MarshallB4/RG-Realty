@@ -15,7 +15,6 @@ import {
   Sparkles,
   TrendingUp,
   Activity,
-  ArrowUpRight,
   BarChart3,
   LineChart as LineChartIcon,
 } from 'lucide-react';
@@ -117,13 +116,17 @@ export const MarketStats: React.FC = () => {
                 <p className="text-2xl md:text-3xl font-serif font-bold text-[#1f1d1a]">
                   ${latestPoint.benchmarkPrice.toLocaleString()}
                 </p>
-                <span className="inline-flex items-center text-[#6f8a61] text-sm font-medium">
-                  <ArrowUpRight
-  size={16}
-  className={`mr-1 ${priceChange < 0 ? 'rotate-180' : ''}`}
-/>
-                  {Math.abs(priceChange).toFixed(1)}%
-                </span>
+                <span
+  className={`inline-flex items-center text-sm font-medium ${
+    priceChange > 0 ? 'text-[#6f8a61]' : 'text-[#a05f5f]'
+  }`}
+>
+  <span className="mr-1">
+    {priceChange > 0 ? '▲' : '▼'}
+  </span>
+
+  {Math.abs(priceChange).toFixed(1)}%
+</span>
               </div>
             </div>
 
@@ -135,13 +138,17 @@ export const MarketStats: React.FC = () => {
                 <p className="text-2xl md:text-3xl font-serif font-bold text-[#1f1d1a]">
                   {latestPoint.inventory.toLocaleString()}
                 </p>
-                <span className="inline-flex items-center text-[#a05f5f] text-sm font-medium">
-                  <ArrowUpRight
-  size={16}
-  className={`mr-1 ${inventoryChange >= 0 ? 'rotate-90' : '-rotate-90'}`}
-/>
-                  {Math.abs(inventoryChange).toFixed(1)}%
-                </span>
+                <span
+  className={`inline-flex items-center text-sm font-medium ${
+    inventoryChange > 0 ? 'text-[#6f8a61]' : 'text-[#a05f5f]'
+  }`}
+>
+  <span className="mr-1">
+    {inventoryChange > 0 ? '▲' : '▼'}
+  </span>
+
+  {Math.abs(inventoryChange).toFixed(1)}%
+</span>
               </div>
             </div>
 
