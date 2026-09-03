@@ -14,18 +14,31 @@ export const PHONE_PERSONAL = '403-852-0242';
    
 
 export const CALGARY_MARKET_DATA = [
-  { month: 'Jul', year: 2025, sales: 2096, newListings: 3911, inventory: 6919, benchmarkPrice: 581100, averagePrice: 617291, daysOnMarket: 37 },
-  { month: 'Aug', year: 2025, sales: 1986, newListings: 3477, inventory: 6659, benchmarkPrice: 576000, averagePrice: 612165, daysOnMarket: 38 },
+
   { month: 'Sep', year: 2025, sales: 1716, newListings: 3782, inventory: 6919, benchmarkPrice: 571400, averagePrice: 615813, daysOnMarket: 42 },
+
   { month: 'Oct', year: 2025, sales: 1879, newListings: 3232, inventory: 6472, benchmarkPrice: 566200, averagePrice: 643261, daysOnMarket: 43 },
+
   { month: 'Nov', year: 2025, sales: 1547, newListings: 2251, inventory: 5587, benchmarkPrice: 559000, averagePrice: 616045, daysOnMarket: 49 },
+
   { month: 'Dec', year: 2025, sales: 1123, newListings: 1219, inventory: 3873, benchmarkPrice: 554700, averagePrice: 605325, daysOnMarket: 53 },
+
   { month: 'Jan', year: 2026, sales: 1234, newListings: 2785, inventory: 4394, benchmarkPrice: 554400, averagePrice: 617844, daysOnMarket: 54 },
+
   { month: 'Feb', year: 2026, sales: 1525, newListings: 2766, inventory: 4825, benchmarkPrice: 560500, averagePrice: 628343, daysOnMarket: 42 },
+
   { month: 'Mar', year: 2026, sales: 1881, newListings: 3409, inventory: 5395, benchmarkPrice: 565600, averagePrice: 641844, daysOnMarket: 35 },
+
   { month: 'Apr', year: 2026, sales: 2104, newListings: 3621, inventory: 5813, benchmarkPrice: 590300, averagePrice: 640988, daysOnMarket: 33 },
+
   { month: 'May', year: 2026, sales: 2162, newListings: 4226, inventory: 6752, benchmarkPrice: 570500, averagePrice: 683320, daysOnMarket: 31 },
+
   { month: 'Jun', year: 2026, sales: 2197, newListings: 3923, inventory: 6840, benchmarkPrice: 572500, averagePrice: 686994, daysOnMarket: 34 },
+
+  { month: 'Jul', year: 2026, sales: 1902, newListings: 3324, inventory: 6639, benchmarkPrice: 569800, averagePrice: 629882, daysOnMarket: 39 },
+
+  { month: 'Aug', year: 2026, sales: 1660, newListings: 3142, inventory: 6522, benchmarkPrice: 569800, averagePrice: 638440, daysOnMarket: 41 },
+
 ];
 
 /* =========================
