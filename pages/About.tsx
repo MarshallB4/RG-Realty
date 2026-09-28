@@ -18,7 +18,7 @@ const About: React.FC = () => {
           {/* Image */}
           <div className="relative overflow-hidden">
             <img
-              src="/images/headshot2.webp"
+              src="/images/brown-sitting.webp"
               alt="Roland Gjelaj"
               className="w-full h-full object-cover object-[center_22%]"
             />

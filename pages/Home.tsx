@@ -196,8 +196,8 @@ const principal = Math.max(Number(homePrice) - downPaymentAmount, 0);
             </span>
 
             <h1 className="animate-fade-up opacity-0 [animation-delay:200ms] text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-8 leading-[0.9] tracking-tight font-extrabold">
-              Elevate Your <br />
-              <span className="text-[#e9e1d2] font-light">Living Experience</span>
+              Invest Smart, <br />
+              <span className="text-[#e9e1d2] font-light">Live Well.</span>
             </h1>
 
             <p className="animate-fade-up opacity-0 [animation-delay:400ms] text-[#f2ede4] text-lg md:text-xl font-light max-w-xl mb-10 leading-relaxed">
@@ -236,7 +236,7 @@ const principal = Math.max(Number(homePrice) - downPaymentAmount, 0);
             <div className="lg:col-span-5 relative">
               <div className="relative z-10 aspect-[3/4]">
                 <img
-                  src="/images/headshot.webp"
+                  src="/images/headshot-new.webp"
                   alt={AGENT_NAME}
                   className="w-full h-full object-cover shadow-2xl"
                 />
@@ -269,13 +269,13 @@ const principal = Math.max(Number(homePrice) - downPaymentAmount, 0);
 
               <div className="grid grid-cols-2 gap-8 mb-10">
                 <div>
-                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">5+</h4>
+                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">6+</h4>
                   <p className="text-xs uppercase tracking-widest text-[#7d7468]">
                     Years of Experience
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">$70M+</h4>
+                  <h4 className="font-serif text-3xl text-[#1f1d1a] mb-1 font-bold">$80M+</h4>
                   <p className="text-xs uppercase tracking-widest text-[#7d7468]">Volume Sold</p>
                 </div>
               </div>
